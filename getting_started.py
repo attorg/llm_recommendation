@@ -11,7 +11,7 @@ model_id = "openai-community/gpt2"
 # model_id = "/Users/antoniogrotta/repositories/LLM_finetuning_exercise/meta-llama/Llama-2-7b-hf"
 
 generator = transformers.pipeline(
-    "text-generation", model=model_id, model_kwargs={"torch_dtype": torch.bfloat16}, device_map="cpu"
+    "text-generation", model=model_id, model_kwargs={"torch_dtype": torch.bfloat16}, device_map="auto"
 )
 generated_text = generator("Hey how are you doing today?")
 print(generated_text)
