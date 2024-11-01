@@ -81,7 +81,7 @@ model_id = "openai-community/gpt2"
 tokenizer = AutoTokenizer.from_pretrained(model_id, use_fast=False)
 tokenizer.pad_token = tokenizer.eos_token
 
-dataset = load_json_dataset("/Users/antoniogrotta/repositories/llm_recommendation/data/exercise_examples.json")
+dataset = load_json_dataset("/data/exercise_examples.json")
 dataset = dataset['train'].train_test_split(test_size=0.2, seed=42)
 
 dataset = dataset.map(create_prompt)

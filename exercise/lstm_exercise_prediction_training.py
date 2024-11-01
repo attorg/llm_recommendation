@@ -1,20 +1,15 @@
 import pandas as pd
-import matplotlib
-import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
+import pickle
 from tensorflow.keras.layers import Dense, Dropout, LSTM, Embedding
 from tensorflow.keras.models import Sequential
-from sklearn.metrics import accuracy_score
 from tensorflow.keras.losses import SparseCategoricalCrossentropy
 
-# Setting up Matplotlib
-matplotlib.use('TkAgg')
-matplotlib.rcParams['mathtext.fontset'] = 'stix'
-matplotlib.rcParams['font.family'] = 'STIXGeneral'
+tf.random.set_seed(40)
 
 # Load data
-data = pd.read_csv('/Users/antoniogrotta/repositories/llm_recommendation/data/exercise_sequence.csv')
+data = pd.read_csv('/data/exercise_sequence.csv')
 
 # Assuming the data column of interest is the first column
 sequence_data = data.iloc[:, 0].values
@@ -49,34 +44,25 @@ x_test, y_test = np.array(x_test), np.array(y_test)
 
 # Building the LSTM model with an Embedding layer
 model = Sequential()
-model.add(Embedding(input_dim=10, output_dim=50, input_length=window))
-model.add(LSTM(units=120, return_sequences=True))
-model.add(Dropout(0.2))
-model.add(LSTM(units=80))
+model.add(Embedding(input_dim=10, output_dim=8, input_length=window))
+model.add(LSTM(units=32))
+# model.add(LSTM(units=32, input_shape=(window, 1)))
+# model.add(LSTM(units=240))
 model.add(Dropout(0.3))
+# model.add(LSTM(units=80))
+# model.add(Dropout(0.4))
 model.add(Dense(units=10, activation='softmax'))
 
 # Compile the model
 model.compile(optimizer='adam', loss=SparseCategoricalCrossentropy(), metrics=['accuracy'])
 
-# Fit the model
-model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=50)
+
+# Fit the model and capture the history
+history = model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=50)
 
 # Save the model
-model.save('keras_model.h5')
+model.save('lstm_exercise_prediction.h5')
 
-# Making predictions
-y_pred = np.argmax(model.predict(x_test), axis=1)
-
-# Plot the predictions
-plt.figure(figsize=(12, 6))
-plt.plot(y_test + 1, 'b', label="Original Class")  # Add 1 to labels for plotting
-plt.plot(y_pred + 1, 'r', label="Predicted Class")
-plt.xlabel('Time')
-plt.ylabel('Exercise Class (1-10)')
-plt.legend()
-
-# Calculate the accuracy score
-accuracy = accuracy_score(y_test, y_pred)
-print("Accuracy on test set: ", accuracy)
-plt.show()
+# Save the history object to a file
+with open('../saved_files/training_history.pkl', 'wb') as file_pi:
+    pickle.dump(history.history, file_pi)
