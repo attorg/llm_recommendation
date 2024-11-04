@@ -22,7 +22,7 @@ window = 5  # Length of input window
 injury_threshold = 0.5  # Threshold to determine Set A or B
 
 # Load data
-data = pd.read_csv('/Users/antoniogrotta/repositories/llm_recommendation/data/exercise_sequence_complex_pattern.csv')
+data = pd.read_csv('/exercise/data/exercise_sequence_complex_pattern.csv')
 
 # Define exercise sets based on injury score
 set_A = set(range(0, 13))  # Example IDs for Set A
@@ -156,8 +156,8 @@ test_sequence_adjusted = y_test[:len(predicted_sequence_flat)] + 1
 predicted_sequence_adjusted = predicted_sequence_flat + 1
 
 # Save sequences for visualization
-np.save('../saved_files/test_sequence.npy', test_sequence_adjusted)
-np.save('../saved_files/predicted_sequence.npy', predicted_sequence_adjusted)
+np.save('saved_files/test_sequence.npy', test_sequence_adjusted)
+np.save('saved_files/predicted_sequence.npy', predicted_sequence_adjusted)
 
 # Transition accuracy
 if total_possible_transitions > 0:

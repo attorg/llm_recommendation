@@ -4,77 +4,38 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23f03574-d707-48b2-9b80-7b49ea74dccd" name="Changes" comment="Added a more complex exercise data generator. Update the lstm architecture accordingly. Validate accordingly.">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/llm_recommendation.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/Augmented_Purchase_Data.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/Augmented_Purchase_Dataset.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/exercise_sequence.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/exercise_sequence_complex_pattern.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/kz.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/purchase_examples.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/purchase_examples.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data_generation/lstm_exercise_data_generation_complex_pattern.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction.h5" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern.h5" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_plot.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_training.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation_test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation_test2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_w_3.h5" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/figure/accuracy.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/figure/loss.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/figure/loss_complex_pattern.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/figure/prediction.pdf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/product/filtering_products_test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/product/product_prediction.h5" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/saved_files/final_metrics.pkl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/saved_files/pattern_counts.pkl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/saved_files/predicted_sequence.npy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/saved_files/test_sequence.npy" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/saved_files/training_history.pkl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/saved_files/training_purchase_history.pkl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/debug-internal.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/debug.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/files/config.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/files/output.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/files/wandb-metadata.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/files/wandb-summary.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/logs/debug-core.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/logs/debug-internal.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/logs/debug.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/run-upc5gh5p.wandb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/files/config.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/files/output.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/files/wandb-metadata.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/files/wandb-summary.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/logs/debug-core.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/logs/debug-internal.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/logs/debug.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/run-526z1dta.wandb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/files/output.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/files/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/files/wandb-metadata.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/logs/debug-core.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/logs/debug-internal.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/logs/debug.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/run-5v7in2bf.wandb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/files/config.yaml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/files/output.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/files/wandb-metadata.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/files/wandb-summary.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/logs/debug-core.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/logs/debug-internal.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/logs/debug.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/run-mfp7rcmz.wandb" afterDir="false" />
+    <list default="true" id="23f03574-d707-48b2-9b80-7b49ea74dccd" name="Changes" comment="Added a more complex exercise data generator. Modify the lstm architecture accordingly. Validate accordingly.">
+      <change afterPath="$PROJECT_DIR$/exercise/data/exercise_sequence.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exercise/data/exercise_sequence_complex_pattern.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/llm_recommendation.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/llm_recommendation.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/exercise_examples.json" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/data/exercise_examples.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_generation/llm_exercise_data_generation_fine_tuning.py" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/data_generation/llm_exercise_data_generation_fine_tuning.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_generation/llm_purchase_data_preprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/product/data_generation/llm_purchase_data_preprocessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_generation/lstm_exercise_data_generation.py" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/data_generation/lstm_exercise_data_generation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_generation/lstm_exercise_data_generation_complex_pattern.py" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/data_generation/lstm_exercise_data_generation_complex_pattern.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_generation/lstm_purchase_data_preprocessing.py" beforeDir="false" afterPath="$PROJECT_DIR$/product/data_generation/lstm_purchase_data_preprocessing.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_plot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_training.py" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_training.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation.py" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation_test2.py" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation_test2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_plot.py" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_plot.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_training.py" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_training.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_validation.py" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_validation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/figure/accuracy.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/figure/accuracy.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/figure/loss.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/figure/loss.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/figure/loss_complex_pattern.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/figure/loss_complex_pattern.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/figure/prediction.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/figure/prediction.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/lstm_product_prediction_training_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/product/lstm_product_prediction_training_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/product/lstm_product_prediction_validation.py" beforeDir="false" afterPath="$PROJECT_DIR$/product/lstm_product_prediction_validation.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saved_files/final_metrics.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/saved_files/final_metrics.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saved_files/pattern_counts.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/saved_files/pattern_counts.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saved_files/predicted_sequence.npy" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/saved_files/predicted_sequence.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saved_files/test_sequence.npy" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/saved_files/test_sequence.npy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saved_files/training_history.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/saved_files/training_history.pkl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/saved_files/training_purchase_history.pkl" beforeDir="false" afterPath="$PROJECT_DIR$/exercise/saved_files/training_purchase_history.pkl" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,6 +44,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="MIXED" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -92,27 +54,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "/Users/antoniogrotta/repositories/llm_recommendation/exercise",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/antoniogrotta/repositories/llm_recommendation/product&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/product" />
       <recent name="$PROJECT_DIR$/exercise" />
       <recent name="$PROJECT_DIR$/data_generation" />
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/saved_files" />
       <recent name="$PROJECT_DIR$/exercise" />
+      <recent name="$PROJECT_DIR$/saved_files" />
       <recent name="$PROJECT_DIR$/product" />
       <recent name="$PROJECT_DIR$/data" />
       <recent name="$PROJECT_DIR$/data_generation" />
@@ -171,7 +134,12 @@
       <workItem from="1730038381529" duration="1766000" />
       <workItem from="1730041456898" duration="8649000" />
       <workItem from="1730114039382" duration="1741000" />
-      <workItem from="1730115796460" duration="64238000" />
+      <workItem from="1730115796460" duration="65325000" />
+      <workItem from="1730717528455" duration="275000" />
+      <workItem from="1730717921864" duration="16000" />
+      <workItem from="1730717941087" duration="24000" />
+      <workItem from="1730718009253" duration="49000" />
+      <workItem from="1730718061998" duration="4000" />
     </task>
     <task id="LOCAL-00001" summary="Uploaded the getting_started.py file.">
       <created>1725457708659</created>
@@ -215,7 +183,21 @@
       <option name="project" value="LOCAL" />
       <updated>1730716408937</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="recommit">
+      <created>1730716662125</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1730716662125</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Added a more complex exercise data generator. Modify the lstm architecture accordingly. Validate accordingly.">
+      <created>1730717009361</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1730717009361</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -239,7 +221,9 @@
     <MESSAGE value="Added lstm training and validation." />
     <MESSAGE value="Some updates." />
     <MESSAGE value="Added a more complex exercise data generator. Update the lstm architecture accordingly. Validate accordingly." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added a more complex exercise data generator. Update the lstm architecture accordingly. Validate accordingly." />
+    <MESSAGE value="recommit" />
+    <MESSAGE value="Added a more complex exercise data generator. Modify the lstm architecture accordingly. Validate accordingly." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added a more complex exercise data generator. Modify the lstm architecture accordingly. Validate accordingly." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -255,12 +239,7 @@
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/test.py</url>
-          <line>4</line>
-          <option name="timeStamp" value="18" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/data_generation/lstm_exercise_data_generation.py</url>
+          <url>file://$PROJECT_DIR$/exercise/data_generation/lstm_exercise_data_generation.py</url>
           <line>44</line>
           <option name="timeStamp" value="39" />
         </line-breakpoint>
@@ -273,16 +252,6 @@
           <url>file://$PROJECT_DIR$/product/lstm_product_prediction_validation.py</url>
           <line>127</line>
           <option name="timeStamp" value="67" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_training.py</url>
-          <line>45</line>
-          <option name="timeStamp" value="86" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation.py</url>
-          <line>143</line>
-          <option name="timeStamp" value="93" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

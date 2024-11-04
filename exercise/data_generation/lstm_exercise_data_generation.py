@@ -48,7 +48,7 @@ print(transition_df)
 sequence_df = pd.DataFrame(custom_sequence, columns=["ID"])
 
 # Save the DataFrame to a CSV file
-output_file_path = "/Users/antoniogrotta/repositories/llm_recommendation/data/exercise_sequence.csv"
+output_file_path = "/exercise/data/exercise_sequence.csv"
 sequence_df.to_csv(output_file_path, index=False)
 
 '''

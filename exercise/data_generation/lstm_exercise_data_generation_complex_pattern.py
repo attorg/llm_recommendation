@@ -54,6 +54,6 @@ sequences_df = pd.DataFrame(sequences, columns=[f'Exercise_{i + 1}' for i in ran
 sequences_df['InjuryScore'] = injury_scores
 
 # Save the DataFrame to a CSV file
-output_file_path = "/Users/antoniogrotta/repositories/llm_recommendation/data/exercise_sequence_complex_pattern.csv"
+output_file_path = "/exercise/data/exercise_sequence_complex_pattern.csv"
 sequences_df.to_csv(output_file_path, index=False)
 

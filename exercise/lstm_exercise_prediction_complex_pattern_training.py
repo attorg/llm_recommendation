@@ -10,7 +10,7 @@ from sklearn.model_selection import train_test_split
 tf.random.set_seed(40)
 
 # Load data
-data = pd.read_csv('/Users/antoniogrotta/repositories/llm_recommendation/data/exercise_sequence_complex_pattern.csv')
+data = pd.read_csv('/exercise/data/exercise_sequence_complex_pattern.csv')
 
 # Extract exercise sequences and injury scores
 exercise_columns = [col for col in data.columns if col.startswith('Exercise_')]
@@ -80,5 +80,5 @@ history = model.fit(
 model.save('lstm_exercise_prediction_complex_pattern_w_3.h5')
 
 # Save the training history
-with open('../saved_files/training_history.pkl', 'wb') as file_pi:
+with open('saved_files/training_history.pkl', 'wb') as file_pi:
     pickle.dump(history.history, file_pi)

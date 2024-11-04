@@ -190,8 +190,8 @@ for i in range(len(y_test) - window):
 test_sequence_adjusted = y_test[window:] + 1  # Exclude initial input
 predicted_sequence_adjusted = np.array(predicted_sequence) + 1
 
-np.save('../saved_files/test_sequence.npy', test_sequence_adjusted)
-np.save('../saved_files/predicted_sequence.npy', predicted_sequence_adjusted)
+np.save('saved_files/test_sequence.npy', test_sequence_adjusted)
+np.save('saved_files/predicted_sequence.npy', predicted_sequence_adjusted)
 
 if total_5 > 0:
     accuracy_5 = correct_5 / total_5
@@ -208,5 +208,5 @@ else:
 overall_accuracy_autoregressive = np.sum(predicted_sequence_adjusted == test_sequence_adjusted) / len(test_sequence_adjusted)
 print(f"Overall accuracy in autoregressive prediction: {overall_accuracy_autoregressive:.2%}")
 
-with open('../saved_files/pattern_counts.pkl', 'wb') as f:
+with open('saved_files/pattern_counts.pkl', 'wb') as f:
     pickle.dump({'total_5': total_5, 'correct_5': correct_5, 'total_8': total_8, 'correct_8': correct_8}, f)

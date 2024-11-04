@@ -64,5 +64,5 @@ history = model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=5
 model.save('lstm_exercise_prediction.h5')
 
 # Save the history object to a file
-with open('../saved_files/training_history.pkl', 'wb') as file_pi:
+with open('saved_files/training_history.pkl', 'wb') as file_pi:
     pickle.dump(history.history, file_pi)
