@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "/Users/antoniogrotta/repositories/llm_recommendation/LLM_lora_fine_tuning.py", line 84, in <module>
+    dataset = load_json_dataset("/content/drive/MyDrive/Colab Notebooks/exercise_examples.json")
+  File "/Users/antoniogrotta/repositories/llm_recommendation/LLM_lora_fine_tuning.py", line 14, in load_json_dataset
+    dataset = load_dataset('json', data_files=json_path)
+  File "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/lib/python3.10/site-packages/datasets/load.py", line 2594, in load_dataset
+    builder_instance = load_dataset_builder(
+  File "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/lib/python3.10/site-packages/datasets/load.py", line 2266, in load_dataset_builder
+    dataset_module = dataset_module_factory(
+  File "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/lib/python3.10/site-packages/datasets/load.py", line 1805, in dataset_module_factory
+    ).get_module()
+  File "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/lib/python3.10/site-packages/datasets/load.py", line 1142, in get_module
+    data_files = DataFilesDict.from_patterns(
+  File "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/lib/python3.10/site-packages/datasets/data_files.py", line 721, in from_patterns
+    else DataFilesList.from_patterns(
+  File "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/lib/python3.10/site-packages/datasets/data_files.py", line 624, in from_patterns
+    resolve_pattern(
+  File "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/lib/python3.10/site-packages/datasets/data_files.py", line 411, in resolve_pattern
+    raise FileNotFoundError(error_msg)
+FileNotFoundError: Unable to find '/content/drive/MyDrive/Colab Notebooks/exercise_examples.json'

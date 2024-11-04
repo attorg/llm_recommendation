@@ -1,0 +1,18 @@
+{"time":"2024-10-02T15:53:50.491999+02:00","level":"INFO","msg":"using version","core version":"0.18.3"}
+{"time":"2024-10-02T15:53:50.492058+02:00","level":"INFO","msg":"created symlink","path":"/Users/antoniogrotta/repositories/llm_recommendation/wandb/run-20241002_155350-upc5gh5p/logs/debug-core.log"}
+{"time":"2024-10-02T15:53:50.521019+02:00","level":"ERROR","msg":"dialing: google: could not find default credentials. See https://cloud.google.com/docs/authentication/external/set-up-adc for more information"}
+{"time":"2024-10-02T15:53:50.536349+02:00","level":"INFO","msg":"created new stream","id":"upc5gh5p"}
+{"time":"2024-10-02T15:53:50.5364+02:00","level":"INFO","msg":"stream: started","id":"upc5gh5p"}
+{"time":"2024-10-02T15:53:50.536393+02:00","level":"INFO","msg":"handler: started","stream_id":{"value":"upc5gh5p"}}
+{"time":"2024-10-02T15:53:50.536477+02:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"upc5gh5p"}}
+{"time":"2024-10-02T15:53:50.536436+02:00","level":"INFO","msg":"sender: started","stream_id":{"value":"upc5gh5p"}}
+{"time":"2024-10-02T15:53:50.918233+02:00","level":"INFO","msg":"wandb-core","!BADKEY":null}
+{"time":"2024-10-02T15:53:50.920763+02:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-10-02T15:53:52.004887+02:00","level":"INFO","msg":"stream: closing","id":"upc5gh5p"}
+{"time":"2024-10-02T15:53:52.005293+02:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-10-02T15:53:52.005341+02:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-10-02T15:53:54.886238+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-10-02T15:53:56.717114+02:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"upc5gh5p"}}
+{"time":"2024-10-02T15:53:56.717154+02:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"upc5gh5p"}}
+{"time":"2024-10-02T15:53:56.717176+02:00","level":"INFO","msg":"sender: closed","stream_id":{"value":"upc5gh5p"}}
+{"time":"2024-10-02T15:53:56.717439+02:00","level":"INFO","msg":"stream: closed","id":"upc5gh5p"}

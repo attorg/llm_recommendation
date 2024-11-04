@@ -1,0 +1,16 @@
+Map: 100%|██████████| 4000/4000 [00:04<00:00, 801.07 examples/s]
+Map: 100%|██████████| 1000/1000 [00:01<00:00, 815.21 examples/s]
+Traceback (most recent call last):
+  File "/Applications/PyCharm.app/Contents/plugins/python/helpers/pydev/pydevd.py", line 1496, in _exec
+    pydev_imports.execfile(file, globals, locals)  # execute the script
+  File "/Applications/PyCharm.app/Contents/plugins/python/helpers/pydev/_pydev_imps/_pydev_execfile.py", line 18, in execfile
+    exec(compile(contents+"\n", file, 'exec'), glob, loc)
+  File "/Users/antoniogrotta/repositories/llm_recommendation/LLM_lora_fine_tuning.py", line 142, in <module>
+    model = AutoModelForCausalLM.from_pretrained(model_id,
+  File "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/lib/python3.10/site-packages/transformers/models/auto/auto_factory.py", line 564, in from_pretrained
+    return model_class.from_pretrained(
+  File "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/lib/python3.10/site-packages/transformers/modeling_utils.py", line 3279, in from_pretrained
+    hf_quantizer.validate_environment(
+  File "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/lib/python3.10/site-packages/transformers/quantizers/quantizer_bnb_4bit.py", line 62, in validate_environment
+    raise RuntimeError("No GPU found. A GPU is needed for quantization.")
+RuntimeError: No GPU found. A GPU is needed for quantization.

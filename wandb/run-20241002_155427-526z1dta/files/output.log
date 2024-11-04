@@ -1,0 +1,14 @@
+Map: 100%|██████████| 8000/8000 [00:00<00:00, 14750.89 examples/s]
+Map: 100%|██████████| 2000/2000 [00:00<00:00, 20223.31 examples/s]
+Map: 100%|██████████| 8000/8000 [00:03<00:00, 2604.86 examples/s]
+Map: 100%|██████████| 2000/2000 [00:00<00:00, 2036.05 examples/s]
+Traceback (most recent call last):
+  File "/Users/antoniogrotta/repositories/llm_recommendation/LLM_lora_fine_tuning.py", line 142, in <module>
+    model = AutoModelForCausalLM.from_pretrained(model_id,
+  File "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/lib/python3.10/site-packages/transformers/models/auto/auto_factory.py", line 564, in from_pretrained
+    return model_class.from_pretrained(
+  File "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/lib/python3.10/site-packages/transformers/modeling_utils.py", line 3279, in from_pretrained
+    hf_quantizer.validate_environment(
+  File "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/lib/python3.10/site-packages/transformers/quantizers/quantizer_bnb_4bit.py", line 62, in validate_environment
+    raise RuntimeError("No GPU found. A GPU is needed for quantization.")
+RuntimeError: No GPU found. A GPU is needed for quantization.

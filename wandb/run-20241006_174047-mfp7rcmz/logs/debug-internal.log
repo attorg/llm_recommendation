@@ -1,0 +1,20 @@
+{"time":"2024-10-06T17:40:47.920067+02:00","level":"INFO","msg":"using version","core version":"0.18.3"}
+{"time":"2024-10-06T17:40:47.920116+02:00","level":"INFO","msg":"created symlink","path":"/Users/antoniogrotta/repositories/llm_recommendation/wandb/run-20241006_174047-mfp7rcmz/logs/debug-core.log"}
+{"time":"2024-10-06T17:40:47.924873+02:00","level":"ERROR","msg":"dialing: google: could not find default credentials. See https://cloud.google.com/docs/authentication/external/set-up-adc for more information"}
+{"time":"2024-10-06T17:40:47.95185+02:00","level":"INFO","msg":"created new stream","id":"mfp7rcmz"}
+{"time":"2024-10-06T17:40:47.951901+02:00","level":"INFO","msg":"stream: started","id":"mfp7rcmz"}
+{"time":"2024-10-06T17:40:47.951897+02:00","level":"INFO","msg":"handler: started","stream_id":{"value":"mfp7rcmz"}}
+{"time":"2024-10-06T17:40:47.952059+02:00","level":"INFO","msg":"sender: started","stream_id":{"value":"mfp7rcmz"}}
+{"time":"2024-10-06T17:40:47.95206+02:00","level":"INFO","msg":"writer: Do: started","stream_id":{"value":"mfp7rcmz"}}
+{"time":"2024-10-06T17:40:48.294532+02:00","level":"INFO","msg":"wandb-core","!BADKEY":null}
+{"time":"2024-10-06T17:40:48.298008+02:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2024-10-06T17:40:58.316866+02:00","level":"ERROR","msg":"monitor: gpu: error sampling metrics: signal: trace/BPT trap"}
+{"time":"2024-10-06T17:41:08.317972+02:00","level":"ERROR","msg":"monitor: gpu: error sampling metrics: signal: trace/BPT trap"}
+{"time":"2024-10-06T17:41:14.43765+02:00","level":"INFO","msg":"stream: closing","id":"mfp7rcmz"}
+{"time":"2024-10-06T17:41:14.437964+02:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2024-10-06T17:41:14.438012+02:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2024-10-06T17:41:15.203775+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2024-10-06T17:41:15.484044+02:00","level":"INFO","msg":"handler: closed","stream_id":{"value":"mfp7rcmz"}}
+{"time":"2024-10-06T17:41:15.484077+02:00","level":"INFO","msg":"sender: closed","stream_id":{"value":"mfp7rcmz"}}
+{"time":"2024-10-06T17:41:15.484076+02:00","level":"INFO","msg":"writer: Close: closed","stream_id":{"value":"mfp7rcmz"}}
+{"time":"2024-10-06T17:41:15.484281+02:00","level":"INFO","msg":"stream: closed","id":"mfp7rcmz"}

@@ -1,0 +1,32 @@
+{
+  "os":  "macOS-14.6.1-arm64-arm-64bit",
+  "python":  "3.10.7",
+  "startedAt":  "2024-10-02T13:54:27.773323Z",
+  "program":  "/Users/antoniogrotta/repositories/llm_recommendation/LLM_lora_fine_tuning.py",
+  "codePath":  "LLM_lora_fine_tuning.py",
+  "git":  {
+    "remote":  "https://github.com/attorg/llm_recommendation.git",
+    "commit":  "4b10281c8c15b46a861a5660de56d48ea443d1f2"
+  },
+  "email":  "antoniogrotta@gmail.com",
+  "root":  "/Users/antoniogrotta/repositories/llm_recommendation",
+  "host":  "MacBook-Pro-di-Antonio-5.local",
+  "username":  "antoniogrotta",
+  "executable":  "/Users/antoniogrotta/miniforge3/envs/LLM_finetuning_exercise/bin/python",
+  "codePathLocal":  "LLM_lora_fine_tuning.py",
+  "cpu_count":  8,
+  "cpu_count_logical":  8,
+  "disk":  {
+    "/":  {
+      "total":  "494384795648",
+      "used":  "493805363200"
+    }
+  },
+  "memory":  {
+    "total":  "8589934592"
+  },
+  "cpu":  {
+    "count":  8,
+    "countLogical":  8
+  }
+}

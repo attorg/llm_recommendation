@@ -1,0 +1,320 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="23f03574-d707-48b2-9b80-7b49ea74dccd" name="Changes" comment="Added a more complex exercise data generator. Update the lstm architecture accordingly. Validate accordingly.">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/llm_recommendation.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/Augmented_Purchase_Data.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/Augmented_Purchase_Dataset.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/exercise_sequence.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/exercise_sequence_complex_pattern.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/kz.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/purchase_examples.csv" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data/purchase_examples.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/data_generation/lstm_exercise_data_generation_complex_pattern.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction.h5" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern.h5" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_plot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_training.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation_test2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_w_3.h5" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/figure/accuracy.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/figure/loss.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/figure/loss_complex_pattern.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/figure/prediction.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product/filtering_products_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/product/product_prediction.h5" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/saved_files/final_metrics.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/saved_files/pattern_counts.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/saved_files/predicted_sequence.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/saved_files/test_sequence.npy" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/saved_files/training_history.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/saved_files/training_purchase_history.pkl" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/debug-internal.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/debug.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/logs/debug-core.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/logs/debug-internal.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/logs/debug.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155350-upc5gh5p/run-upc5gh5p.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/logs/debug-core.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/logs/debug-internal.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/logs/debug.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241002_155427-526z1dta/run-526z1dta.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/files/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/logs/debug-core.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/logs/debug-internal.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/logs/debug.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_164521-5v7in2bf/run-5v7in2bf.wandb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/files/config.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/files/output.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/files/wandb-metadata.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/files/wandb-summary.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/logs/debug-core.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/logs/debug-internal.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/logs/debug.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/wandb/run-20241006_174047-mfp7rcmz/run-mfp7rcmz.wandb" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2lbnGUdoLhiLshlHidR5kqKCA6W" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/antoniogrotta/repositories/llm_recommendation/exercise",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/exercise" />
+      <recent name="$PROJECT_DIR$/data_generation" />
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/saved_files" />
+      <recent name="$PROJECT_DIR$/exercise" />
+      <recent name="$PROJECT_DIR$/product" />
+      <recent name="$PROJECT_DIR$/data" />
+      <recent name="$PROJECT_DIR$/data_generation" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="LLM_inference_test" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="llm_recommendation" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/LLM_inference_test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="23f03574-d707-48b2-9b80-7b49ea74dccd" name="Changes" comment="" />
+      <created>1725457548582</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1725457548582</updated>
+      <workItem from="1725457549973" duration="13000" />
+      <workItem from="1725457587189" duration="1428000" />
+      <workItem from="1725893818360" duration="905000" />
+      <workItem from="1726065784488" duration="1907000" />
+      <workItem from="1727369927881" duration="2320000" />
+      <workItem from="1727685393382" duration="6832000" />
+      <workItem from="1727773790393" duration="15368000" />
+      <workItem from="1727945896706" duration="4749000" />
+      <workItem from="1727952213743" duration="4839000" />
+      <workItem from="1728050758129" duration="5998000" />
+      <workItem from="1728477928838" duration="4142000" />
+      <workItem from="1728979631743" duration="65000" />
+      <workItem from="1728979710373" duration="7093000" />
+      <workItem from="1729504053645" duration="1423000" />
+      <workItem from="1729505491669" duration="17567000" />
+      <workItem from="1729689883238" duration="41000" />
+      <workItem from="1729690054054" duration="9262000" />
+      <workItem from="1729845813696" duration="18739000" />
+      <workItem from="1730038381529" duration="1766000" />
+      <workItem from="1730041456898" duration="8649000" />
+      <workItem from="1730114039382" duration="1741000" />
+      <workItem from="1730115796460" duration="64238000" />
+    </task>
+    <task id="LOCAL-00001" summary="Uploaded the getting_started.py file.">
+      <created>1725457708659</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1725457708659</updated>
+    </task>
+    <task id="LOCAL-00002" summary=".">
+      <created>1725457790150</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1725457790150</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added fine-tuning example and LLM test with quantization.">
+      <created>1726066550199</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1726066550199</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added lstm training and validation.">
+      <created>1729619865257</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1729619865257</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Some updates.">
+      <created>1730455242085</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1730455242085</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added a more complex exercise data generator. Update the lstm architecture accordingly. Validate accordingly.">
+      <created>1730716408937</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1730716408937</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Uploaded the getting_started.py file." />
+    <MESSAGE value="." />
+    <MESSAGE value="Added fine-tuning example and LLM test with quantization." />
+    <MESSAGE value="Added lstm training and validation." />
+    <MESSAGE value="Some updates." />
+    <MESSAGE value="Added a more complex exercise data generator. Update the lstm architecture accordingly. Validate accordingly." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added a more complex exercise data generator. Update the lstm architecture accordingly. Validate accordingly." />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/LLM_fine_tuning_example.py</url>
+          <line>22</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/exercise/llm_lora_fine_tuning_exercise_prediction.py</url>
+          <line>127</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test.py</url>
+          <line>4</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/data_generation/lstm_exercise_data_generation.py</url>
+          <line>44</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/product/lstm_product_prediction_validation.py</url>
+          <line>13</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/product/lstm_product_prediction_validation.py</url>
+          <line>127</line>
+          <option name="timeStamp" value="67" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_training.py</url>
+          <line>45</line>
+          <option name="timeStamp" value="86" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/exercise/lstm_exercise_prediction_complex_pattern_validation.py</url>
+          <line>143</line>
+          <option name="timeStamp" value="93" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/llm_recommendation$LSTM_product_prediction_validation.coverage" NAME="LSTM_product_prediction_validation Coverage Results" MODIFIED="1730286855389" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$LSTM_exercise_prediction.coverage" NAME="LSTM_exercise_prediction Coverage Results" MODIFIED="1729506224199" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$LSTM_purchase_data_preprocessing.coverage" NAME="LSTM_purchase_data_preprocessing Coverage Results" MODIFIED="1730283708397" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_generation" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$lstm_exercise_prediction_complex_pattern_validation_test.coverage" NAME="lstm_exercise_prediction_complex_pattern_validation_test Coverage Results" MODIFIED="1730661081846" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/exercise" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$lstm_exercise_prediction_complex_pattern_validation_test2.coverage" NAME="lstm_exercise_prediction_complex_pattern_validation_test2 Coverage Results" MODIFIED="1730711225858" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/exercise" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$test.coverage" NAME="test Coverage Results" MODIFIED="1728236630114" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$LLM_lora_fine_tuning.coverage" NAME="LLM_lora_fine_tuning Coverage Results" MODIFIED="1728229236337" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$purchase_data_preprocessing.coverage" NAME="purchase_data_preprocessing Coverage Results" MODIFIED="1727953773453" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$attention_test.coverage" NAME="attention_test Coverage Results" MODIFIED="1729071382221" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$lstm_product_prediction_validation.coverage" NAME="lstm_product_prediction_validation Coverage Results" MODIFIED="1730298857190" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$lstm_exercise_prediction_complex_pattern_training.coverage" NAME="lstm_exercise_prediction_complex_pattern_training Coverage Results" MODIFIED="1730714587280" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/exercise" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$exercise_data_generation_LSTM.coverage" NAME="exercise_data_generation_LSTM Coverage Results" MODIFIED="1730111053834" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_generation" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$lstm_exercise_prediction_complex_pattern_plot.coverage" NAME="lstm_exercise_prediction_complex_pattern_plot Coverage Results" MODIFIED="1730715293480" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/exercise" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$exercise_data_generation.coverage" NAME="exercise_data_generation Coverage Results" MODIFIED="1729159597799" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$LSTM_exercise_prediction_training.coverage" NAME="LSTM_exercise_prediction_training Coverage Results" MODIFIED="1729617207950" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$exercise_data_generation_LSTM_1.coverage" NAME="exercise_data_generation_LSTM_1 Coverage Results" MODIFIED="1729688582501" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_generation" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$LSTM_exercise_prediction_validation_test.coverage" NAME="LSTM_exercise_prediction_validation_test Coverage Results" MODIFIED="1730286917700" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$lstm_exercise_data_generation_complex_pattern.coverage" NAME="lstm_exercise_data_generation_complex_pattern Coverage Results" MODIFIED="1730456236328" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/data_generation" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$LSTM_exercise_prediction_validation.coverage" NAME="LSTM_exercise_prediction_validation Coverage Results" MODIFIED="1729615116356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$lstm_product_prediction_training_test.coverage" NAME="lstm_product_prediction_training_test Coverage Results" MODIFIED="1730303843779" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$lstm_exercise_prediction_complex_pattern_validation.coverage" NAME="lstm_exercise_prediction_complex_pattern_validation Coverage Results" MODIFIED="1730475829185" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/exercise" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$LLM_fine_tuning_example.coverage" NAME="LLM_fine_tuning_example Coverage Results" MODIFIED="1727786924728" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$LSTM_plot.coverage" NAME="LSTM_plot Coverage Results" MODIFIED="1730278492736" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$LSTM_plot_pattern_validation.coverage" NAME="LSTM_plot_pattern validation Coverage Results" MODIFIED="1730287031627" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$LLM_inference_test.coverage" NAME="LLM_inference_test Coverage Results" MODIFIED="1727952259421" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$LSTM_exercise_prediction_training_test_multiple_prediction.coverage" NAME="LSTM_exercise_prediction_training_test_multiple_prediction Coverage Results" MODIFIED="1729680762066" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$LSTM_product_prediction_training_test.coverage" NAME="LSTM_product_prediction_training_test Coverage Results" MODIFIED="1730285905964" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/llm_recommendation$LSTM_exercise_prediction_training_test.coverage" NAME="LSTM_exercise_prediction_training_test Coverage Results" MODIFIED="1730286887763" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>
