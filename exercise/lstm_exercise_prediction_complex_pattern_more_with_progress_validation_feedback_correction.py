@@ -12,14 +12,93 @@ plt.style.use('classic')
 np.random.seed(40)
 
 
-def predict_with_temperature(model, input_data, temperature):
+def evaluate_feedback_predictions(predicted_sequence, feedback_sequence, similarity_matrix, beta=1.0):
+    """
+    Valuta l'aderenza delle predizioni al feedback e misura la coerenza.
+
+    Args:
+        predicted_sequence (list of lists): Sequenze di esercizi predetti.
+        feedback_sequence (list of lists): Sequenze dei delta feedback.
+        similarity_matrix (numpy.ndarray): Matrice di similarità (n x n).
+        beta (float): Peso del feedback nella valutazione dell'aderenza.
+
+    Returns:
+        dict: Risultati dettagliati e metriche aggregate.
+    """
+    adherence_results = []
+    total_timesteps = 0
+    consistent_predictions = 0
+
+    for seq_idx, (pred_seq, fb_seq) in enumerate(zip(predicted_sequence, feedback_sequence)):
+        seq_results = []
+
+        for t in range(len(pred_seq) - 1):
+            e_t = pred_seq[t]
+            e_next = pred_seq[t + 1]
+            similarity = similarity_matrix[e_t, e_next]
+            delta_f = fb_seq[t]
+
+            if delta_f > 0 and similarity >= 0.5:
+                seq_results.append("Followed Positive Feedback")
+                consistent_predictions += 1
+            elif delta_f < 0 and similarity < 0.5:
+                seq_results.append("Followed Negative Feedback")
+                consistent_predictions += 1
+            else:
+                seq_results.append("Did Not Follow Feedback")
+
+            total_timesteps += 1
+
+        adherence_results.append(seq_results)
+
+    # Calcolo della precisione rispetto al feedback
+    feedback_accuracy = consistent_predictions / total_timesteps if total_timesteps > 0 else 0
+
+    return {
+        "adherence_results": adherence_results,
+        "metrics": {
+            "feedback_accuracy": feedback_accuracy,
+            "total_timesteps": total_timesteps,
+        }
+    }
+
+
+def compute_kl_divergence(q_t, p_t):
+    """Compute the KL divergence between q_t and p_t."""
+    kl_divergence = np.sum(q_t * np.log(q_t / p_t))
+    return kl_divergence
+
+
+def predict_with_temperature(model, input_data):
     logits = model.predict(input_data)
-    scaled_logits = logits / temperature
-    probabilities = tf.nn.softmax(scaled_logits).numpy()
-    return probabilities
+    probabilities = tf.nn.softmax(logits / 0.03).numpy()
+    return probabilities, (logits / 0.03)
 
 
-temperature = 0.03
+def predict_with_feedback_correction(logits, q_t):
+    # Compute correction vector u_t to align probabilities with q_t
+    u_t = np.log(q_t) - logits
+    corrected_logits = logits + u_t
+    corrected_probabilities = tf.nn.softmax(corrected_logits).numpy()
+
+    return corrected_probabilities
+
+
+def compute_q_t(base_probabilities, feedback, similarity_matrix, beta, previous_ex_id, temperature):
+    """Compute q_t based on feedback and similarity."""
+    logit = beta * feedback * similarity_matrix[previous_ex_id]
+    weights = np.exp(logit / temperature)
+    # weights = tf.nn.softmax(beta * feedback * similarity_matrix[previous_ex_id])
+    # weights = beta * feedback * similarity_matrix[previous_ex_id]
+    weighted_probabilities = base_probabilities * weights
+    # weights = weights / weights.sum()
+    # q_t = base_probabilities * weights
+    q_t = weighted_probabilities / weighted_probabilities.sum()
+    return q_t
+
+
+# Parameters
+temperature = 1
 num_classes = 23
 window = 3
 injury_threshold = 0.5
@@ -48,42 +127,73 @@ patterns_B = {
     "cool_down": {20: 21}
 }
 
-data = pd.read_csv('data/exercise_sequence_complex_pattern_more.csv')
+difficulty_levels = [1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 7]
 
+# Inizializza la matrice di similarità
+similarity_matrix = np.zeros((num_classes, num_classes))
+
+# Popola la matrice in base ai livelli di difficoltà
+for i in range(num_classes):
+    for j in range(num_classes):
+        if i == j:
+            similarity_matrix[i, j] = 1.0  # Massima similarità con sé stesso
+        else:
+            difficulty_difference = abs(difficulty_levels[i] - difficulty_levels[j])
+            similarity_matrix[i, j] = max(0.0, 1 - 0.1 * difficulty_difference)  # Penalizza differenze di difficoltà
+
+
+beta = 30  # Controls the influence of feedback
+
+# Load data
+data = pd.read_csv('data/exercise_sequence_complex_pattern_more_with_progress.csv')
+
+# Extract sequences and other information
 exercise_columns = [col for col in data.columns if col.startswith('Exercise_')]
+progress_columns = [col for col in data.columns if col.startswith('Phase_Progress')]
+
 sequences = data[exercise_columns].values - 1
-# sequences = sequences[:100, :]
+sequences = sequences[:100]
+phase_progress = data[progress_columns].values
 injury_scores = data['InjuryScore'].values
 
+# Split data
 split_index = int(len(sequences) * 0.70)
 train_sequences, test_sequences = sequences[:split_index], sequences[split_index:]
+test_phase_progress = phase_progress[split_index:]
 test_injury_scores = injury_scores[split_index:]
 
+# Prepare test inputs and targets
 X_test_exercise = []
 X_test_injury = []
+X_test_progress = []
 y_test = []
 injury_test_labels = []
+
 for idx, seq in enumerate(test_sequences):
     injury_score = test_injury_scores[idx]
+    progress_seq = test_phase_progress[idx]
     expected_set = set_A if injury_score < injury_threshold else set_B
     for i in range(len(seq) - window):
         exercise_window = seq[i:i + window]
         injury_window = np.full(window, injury_score)
+        progress_window = progress_seq[i:i + window]
 
         X_test_exercise.append(exercise_window)
         X_test_injury.append(injury_window)
+        X_test_progress.append(progress_window)
         y_test.append(seq[i + window])
         injury_test_labels.append(expected_set)
 
 X_test_exercise = np.array(X_test_exercise)
 X_test_injury = np.array(X_test_injury)
+X_test_progress = np.array(X_test_progress)
 y_test = np.array(y_test)
 injury_test_labels = np.array(injury_test_labels)
 
-model = load_model('lstm_exercise_prediction_complex_pattern_more_w_3.h5')
+# Load the model
+model = load_model('lstm_exercise_prediction_complex_pattern_more_with_progress_w_3.h5')
 
-# model.save('/Users/antoniogrotta/repositories/llm_recommendation/exercise/saved_files/model_franc', save_format='tf')
-
+# Initialize validation counters
 total_correct_transitions = 0
 total_possible_transitions = 0
 set_mismatch_count = 0
@@ -103,9 +213,15 @@ phase_limit_violation_indices = []
 set_mismatch_indices = []
 all_predicted_sequences = []
 pattern_violation_indices = []
+kl_divergences = []
+feedback_sequence = []
+all_feedbacks = []
+
+# Validation process
 for idx, seq in enumerate(test_sequences):
     is_correct_sequence = True
     injury_score = test_injury_scores[idx]
+    progress_seq = test_phase_progress[idx]
 
     if injury_score < injury_threshold:
         warm_up = warm_up_A
@@ -120,18 +236,36 @@ for idx, seq in enumerate(test_sequences):
 
     initial_input_exercise = seq[:window]
     initial_input_injury = np.full(window, injury_score)
+    initial_input_progress = progress_seq[:window]
     current_seq_exercise = initial_input_exercise.reshape(1, window)
     current_seq_injury = initial_input_injury.reshape(1, window)
+    current_seq_progress = initial_input_progress.reshape(1, window)
 
     current_phase = "warm_up"
     warmup_count, main_count, cooldown_count = 3, 0, 0
     predicted_sequence = []
+    feedback_sequence = []
     mismatch_found = False
 
+    predicted_value = initial_input_exercise[2]
+    predicted_sequence.append(predicted_value)
     for i in range(window, len(seq)):
-        pred_probs = predict_with_temperature(model, [current_seq_exercise, current_seq_injury], temperature)
-        pred_next = np.random.choice(range(num_classes), p=pred_probs[0])
+        base_probs, logits = predict_with_temperature(model, [current_seq_exercise, current_seq_injury, current_seq_progress])
 
+        # Compute q_t based on feedback and similarity (placeholder feedback)
+        feedback = np.random.uniform(-1, 1)  # Replace with actual feedback
+        feedback_sequence.append(feedback)
+        q_t = compute_q_t(base_probs[0], feedback, similarity_matrix, beta, predicted_value, temperature)
+
+        # Correct probabilities using q_t
+        corrected_probs = predict_with_feedback_correction(logits, q_t)
+
+        # Compute KL divergence
+        kl_div = compute_kl_divergence(q_t, corrected_probs)  # Ensure matrices are aligned
+        kl_divergences.append(kl_div)  # Append the first (and only) row result
+
+        # pred_next = np.random.choice(range(num_classes), p=corrected_probs[0])
+        pred_next = np.argmax(corrected_probs[0])
         predicted_sequence.append(pred_next)
         predicted_value = int(pred_next)
         previous_phase = current_phase
@@ -219,8 +353,10 @@ for idx, seq in enumerate(test_sequences):
 
         current_seq_exercise = np.append(current_seq_exercise[:, 1:], [[pred_next]], axis=1)
         current_seq_injury = np.append(current_seq_injury[:, 1:], [[injury_score]], axis=1)
+        current_seq_progress = np.append(current_seq_progress[:, 1:], [[progress_seq[i]]], axis=1)
 
     all_predicted_sequences.append(predicted_sequence)
+    all_feedbacks.append(feedback_sequence)
     if is_correct_sequence == True:
         correct_sequences += 1
 
@@ -228,6 +364,8 @@ transition_error_matrix.to_csv('transition_error_matrix.csv')
 print("Matrice di errore di transizione:\n", transition_error_matrix)
 
 predicted_sequence = np.array(all_predicted_sequences)
+feedback_sequence = np.array(all_feedbacks)
+
 test_sequence_adjusted = test_sequences + 1
 predicted_sequence_adjusted = predicted_sequence + 1
 
@@ -240,7 +378,8 @@ np.save('saved_files/predicted_sequence.npy', predicted_sequence_adjusted)
 # Reporting results
 if total_possible_transitions > 0:
     transition_violation_rate = (phase_transition_violations / total_possible_transitions) * 100
-    print(f"Transition violation rate: {transition_violation_rate:.2f}% ({phase_transition_violations}/{total_possible_transitions})")
+    print(
+        f"Transition violation rate: {transition_violation_rate:.2f}% ({phase_transition_violations}/{total_possible_transitions})")
 else:
     print("No phase transitions found in the test set.")
 
@@ -251,10 +390,11 @@ else:
     print("No limit opportunities found in the test set.")
 
 mismatch_percentage = set_mismatch_count / len(y_test) * 100
-print(f"Percentage of predictions outside expected set based on injury score: {mismatch_percentage:.2f}% ({set_mismatch_count}/{len(y_test)})")
+print(
+    f"Percentage of predictions outside expected set based on injury score: {mismatch_percentage:.2f}% ({set_mismatch_count}/{len(y_test)})")
 
-print(f"Number of phase limit violations: {phase_limit_violations}")
-print(f"Number of phase transition violations: {phase_transition_violations}")
+print(f"Number of phase limit violations: {phase_limit_violations} / {total_limit_opportunities}")
+print(f"Number of phase transition violations: {phase_transition_violations} / {total_possible_transitions}")
 
 if total_pattern_checks > 0:
     pattern_violation_rate = (pattern_violations / total_pattern_checks) * 100
@@ -262,166 +402,33 @@ if total_pattern_checks > 0:
 else:
     print("No pattern checks were made.")
 
+'''
 correct_predictions = predicted_sequence_adjusted == test_sequence_adjusted
 overall_accuracy_autoregressive = np.sum(correct_predictions) / correct_predictions.size
 print(f"Overall accuracy in autoregressive prediction: {overall_accuracy_autoregressive:.2%}")
+'''
 
-warmup_limit_A = max(warm_up_A) + 1
-cooldown_limit_A = min(cool_down_A) + 1
-warmup_limit_B = max(warm_up_B) + 1
-cooldown_limit_B = min(cool_down_B) + 1
+# Report KL divergence statistics
+if kl_divergences:
+    avg_kl_div = np.mean(kl_divergences)
+    max_kl_div = np.max(kl_divergences)
+    min_kl_div = np.min(kl_divergences)
+    print(f"Average KL divergence: {avg_kl_div:.4f}")
+    print(f"Maximum KL divergence: {max_kl_div:.4f}")
+    print(f"Minimum KL divergence: {min_kl_div:.4f}")
+else:
+    print("No KL divergences calculated.")
 
-num_samples_to_plot = 10
+# Esegui la valutazione
+results = evaluate_feedback_predictions(predicted_sequence, feedback_sequence, similarity_matrix)
 
-sampled_indices_phase_violation = np.random.choice(violation_indices, min(len(violation_indices), num_samples_to_plot), replace=False)
-sampled_indices_phase_limit_violation = np.random.choice(phase_limit_violation_indices,
-                                   min(len(phase_limit_violation_indices), num_samples_to_plot), replace=False)
-sampled_indices_set_mismatch = np.random.choice(set_mismatch_indices, min(len(set_mismatch_indices), num_samples_to_plot), replace=False)
-all_violation_indices = set(violation_indices + phase_limit_violation_indices + set_mismatch_indices + pattern_violation_indices)
-no_violation_indices = [i for i in range(len(test_sequences)) if i not in all_violation_indices]
-sampled_indices_no_violation = np.random.choice(no_violation_indices, min(len(no_violation_indices), num_samples_to_plot))
-
-print(f"Number of right sequences: {len(no_violation_indices)}")
-print(f"Number of right sequences (with flag): {correct_sequences}")
-
-
-for index in sampled_indices_phase_violation:
-    plt.figure(figsize=(12, 6))
-
-    true_sequence = test_sequence_adjusted[index, :]
-    predicted_sequence = predicted_sequence_adjusted[index, :]
-
-    injury_score = test_injury_scores[index]
-    if injury_score < injury_threshold:
-        warmup_limit = warmup_limit_A
-        cooldown_limit = cooldown_limit_A
-    else:
-        warmup_limit = warmup_limit_B
-        cooldown_limit = cooldown_limit_B
-
-    plt.plot(true_sequence, label="True Sequence", linestyle="--", marker="o")
-    plt.plot(predicted_sequence, label="Predicted Sequence", linestyle="-", marker="x")
-
-    plt.axhline(y=warmup_limit, color='orange', linestyle='--')
-    plt.axhline(y=cooldown_limit, color='orange', linestyle='--')
-
-    plt.axvline(x=2, color='purple', linestyle='--')
-    plt.axvline(x=11, color='purple', linestyle='--')
-
-    current_phase = "warm_up"
-
-    for step, predicted_value in enumerate(predicted_sequence):
-        if predicted_value <= warmup_limit:
-            phase = "warm_up"
-        elif predicted_value > warmup_limit and predicted_value <= cooldown_limit:
-            phase = "main"
-        else:
-            phase = "cool_down"
-
-        if current_phase == "warm_up" and phase == "cool_down":
-            plt.plot(step, predicted_value, 'ro')
-        elif current_phase == "main" and phase == "warm_up":
-            plt.plot(step, predicted_value, 'ro')
-        elif current_phase == "cool_down" and phase != "cool_down":
-            plt.plot(step, predicted_value, 'go')
-
-        current_phase = phase
-
-    plt.xlabel("Exercise Step")
-    plt.ylabel("Exercise ID")
-    plt.title(f"Phase Violation")
-    plt.legend(loc='upper left')
-    plt.xlim(0, 14)
-    plt.savefig(f"figure/phase_violation_{index}.svg", format='svg', bbox_inches='tight', pad_inches=0)
-
-for index in sampled_indices_phase_limit_violation:
-    plt.figure(figsize=(12, 6))
-
-    true_sequence = test_sequence_adjusted[index, :]
-    predicted_sequence = predicted_sequence_adjusted[index, :]
-
-    injury_score = test_injury_scores[index]
-    warmup_limit = warmup_limit_A if injury_score < injury_threshold else warmup_limit_B
-    cooldown_limit = cooldown_limit_A if injury_score < injury_threshold else cooldown_limit_B
-
-    plt.plot(true_sequence, label="True Sequence", linestyle="--", marker="o")
-    plt.plot(predicted_sequence, label="Predicted Sequence", linestyle="-", marker="x")
-
-    plt.axhline(y=warmup_limit, color='orange', linestyle='--', label="Warm-Up Limit")
-    plt.axhline(y=cooldown_limit, color='orange', linestyle='--')
-
-    plt.axvline(x=2, color='purple', linestyle='--')
-    plt.axvline(x=11, color='purple', linestyle='--')
-
-    for i, (true_val, pred_val) in enumerate(zip(true_sequence, predicted_sequence)):
-        if pred_val > warmup_limit and i < 2:
-            plt.scatter(i, pred_val, color='red')
-        if pred_val < cooldown_limit and i > 11:
-            plt.scatter(i, pred_val, color='red')
-
-    plt.xlabel("Exercise Step")
-    plt.ylabel("Exercise ID")
-    plt.title(f"Phase Limit Violation")
-    plt.legend(loc='upper left')
-    plt.xlim(0, 14)
-    plt.savefig(f"figure/phase_limit_violation_{index}.svg", format='svg', bbox_inches='tight', pad_inches=0)
-
-for index in sampled_indices_set_mismatch:
-    plt.figure(figsize=(12, 6))
-
-    true_sequence = test_sequence_adjusted[index, :]
-    predicted_sequence = predicted_sequence_adjusted[index, :]
-
-    injury_score = test_injury_scores[index]
-    warmup_limit = warmup_limit_A if injury_score < injury_threshold else warmup_limit_B
-    cooldown_limit = cooldown_limit_A if injury_score < injury_threshold else cooldown_limit_B
-    expected_set = set_A if injury_score < injury_threshold else set_B
-    expected_set = [x + 1 for x in expected_set]
-
-    plt.plot(true_sequence, label="True Sequence", linestyle="--", marker="o")
-    plt.plot(predicted_sequence, label="Predicted Sequence", linestyle="-", marker="x")
-
-    plt.axhline(y=warmup_limit, color='orange', linestyle='--')
-    plt.axhline(y=cooldown_limit, color='orange', linestyle='--')
-
-    plt.axvline(x=2, color='purple', linestyle='--')
-    plt.axvline(x=11, color='purple', linestyle='--')
-
-    for i, pred_val in enumerate(predicted_sequence):
-        if pred_val not in expected_set:
-            plt.scatter(i, pred_val, color='red')
-
-    plt.xlabel("Exercise Step")
-    plt.ylabel("Exercise ID")
-    plt.title(f"Set Mismatch Violation")
-    plt.legend(loc='upper left')
-    plt.xlim(0, 14)
-    plt.savefig(f"figure/set_mismatch_{index}.svg", format='svg', bbox_inches='tight', pad_inches=0)
-
-for index in sampled_indices_no_violation:
-    plt.figure(figsize=(12, 6))
-
-    true_sequence = test_sequence_adjusted[index, :]
-    predicted_sequence = predicted_sequence_adjusted[index, :]
-
-    injury_score = test_injury_scores[index]
-    warmup_limit = warmup_limit_A if injury_score < injury_threshold else warmup_limit_B
-    cooldown_limit = cooldown_limit_A if injury_score < injury_threshold else cooldown_limit_B
-
-    plt.plot(true_sequence, label="True Sequence", linestyle="--", marker="o")
-    plt.plot(predicted_sequence, label="Predicted Sequence", linestyle="-", marker="x")
-
-    plt.axhline(y=warmup_limit, color='orange', linestyle='--')
-    plt.axhline(y=cooldown_limit, color='orange', linestyle='--')
-
-    plt.axvline(x=2, color='purple', linestyle='--')
-    plt.axvline(x=11, color='purple', linestyle='--')
-
-    plt.xlabel("Exercise Step")
-    plt.ylabel("Exercise ID")
-    plt.title(f"Sequence Without Violations - Index {index}")
-    plt.legend(loc='upper left')
-    plt.xlim(0, 14)
-    plt.savefig(f"figure/no_violations_{index}.svg", format='svg', bbox_inches='tight', pad_inches=0)
-
-plt.show()
+'''
+# Stampa i risultati
+for i, seq_results in enumerate(results["adherence_results"]):
+    print(f"Sequence {i + 1} Results:")
+    for t, res in enumerate(seq_results):
+        print(f"  Timestep {t}: {res}")
+'''
+print("\nMetrics:")
+for metric, value in results["metrics"].items():
+    print(f"{metric}: {value:.2f}")

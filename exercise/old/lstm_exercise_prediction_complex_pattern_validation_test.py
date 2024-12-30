@@ -216,8 +216,8 @@ test_sequence_adjusted = y_test[:len(predicted_sequence_flat)] + 1
 predicted_sequence_adjusted = predicted_sequence_flat + 1
 
 # Save sequences for visualization
-np.save('saved_files/test_sequence.npy', test_sequence_adjusted)
-np.save('saved_files/predicted_sequence.npy', predicted_sequence_adjusted)
+np.save('../saved_files/test_sequence.npy', test_sequence_adjusted)
+np.save('../saved_files/predicted_sequence.npy', predicted_sequence_adjusted)
 
 # Transition accuracy
 if total_possible_transitions > 0:

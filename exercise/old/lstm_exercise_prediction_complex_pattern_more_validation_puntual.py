@@ -48,7 +48,7 @@ patterns_B = {
     "cool_down": {20: 21}
 }
 
-data = pd.read_csv('data/exercise_sequence_complex_pattern_more.csv')
+data = pd.read_csv('../data/exercise_sequence_complex_pattern_more.csv')
 
 exercise_columns = [col for col in data.columns if col.startswith('Exercise_')]
 sequences = data[exercise_columns].values - 1
@@ -212,8 +212,8 @@ predicted_sequence_adjusted = predicted_sequence + 1
 initial_elements = test_sequence_adjusted[:, :3]
 predicted_sequence_adjusted = np.concatenate([initial_elements, predicted_sequence_adjusted], axis=1)
 
-np.save('saved_files/test_sequence.npy', test_sequence_adjusted)
-np.save('saved_files/predicted_sequence.npy', predicted_sequence_adjusted)
+np.save('../saved_files/test_sequence.npy', test_sequence_adjusted)
+np.save('../saved_files/predicted_sequence.npy', predicted_sequence_adjusted)
 
 # Reporting results
 if total_possible_transitions > 0:

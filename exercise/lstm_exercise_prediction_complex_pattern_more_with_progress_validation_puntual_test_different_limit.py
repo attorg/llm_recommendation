@@ -23,7 +23,7 @@ temperature = 0.03
 num_classes = 23
 window = 3
 injury_threshold = 0.5
-warmup_limit, main_limit, cooldown_limit = 3, 9, 3
+warmup_limit, main_limit, cooldown_limit = 3, 10, 4
 
 set_A = set(range(0, 13))
 set_B = set(range(13, 23))
@@ -48,42 +48,55 @@ patterns_B = {
     "cool_down": {20: 21}
 }
 
-data = pd.read_csv('data/exercise_sequence_complex_pattern_more.csv')
+data = pd.read_csv('data/exercise_sequence_complex_pattern_more_with_progress_test_different_limit.csv')
 
+# Extract exercise sequences, injury scores, and phase progress
 exercise_columns = [col for col in data.columns if col.startswith('Exercise_')]
+progress_columns = [col for col in data.columns if col.startswith('Phase_Progress')]
+
 sequences = data[exercise_columns].values - 1
-# sequences = sequences[:100, :]
+# sequences = sequences[:100]
+phase_progress = data[progress_columns].values
 injury_scores = data['InjuryScore'].values
 
+# Split into training and test sets
 split_index = int(len(sequences) * 0.70)
-train_sequences, test_sequences = sequences[:split_index], sequences[split_index:]
-test_injury_scores = injury_scores[split_index:]
+train_sequences, test_sequences = sequences, sequences
+test_phase_progress = phase_progress
+test_injury_scores = injury_scores
 
+# Prepare test inputs and targets
 X_test_exercise = []
 X_test_injury = []
+X_test_progress = []
 y_test = []
 injury_test_labels = []
+
 for idx, seq in enumerate(test_sequences):
     injury_score = test_injury_scores[idx]
+    progress_seq = test_phase_progress[idx]
     expected_set = set_A if injury_score < injury_threshold else set_B
     for i in range(len(seq) - window):
         exercise_window = seq[i:i + window]
         injury_window = np.full(window, injury_score)
+        progress_window = progress_seq[i:i + window]
 
         X_test_exercise.append(exercise_window)
         X_test_injury.append(injury_window)
+        X_test_progress.append(progress_window)
         y_test.append(seq[i + window])
         injury_test_labels.append(expected_set)
 
 X_test_exercise = np.array(X_test_exercise)
 X_test_injury = np.array(X_test_injury)
+X_test_progress = np.array(X_test_progress)
 y_test = np.array(y_test)
 injury_test_labels = np.array(injury_test_labels)
 
-model = load_model('lstm_exercise_prediction_complex_pattern_more_w_3.h5')
+# Load the model
+model = load_model('lstm_exercise_prediction_complex_pattern_more_with_progress_w_3.h5')
 
-# model.save('/Users/antoniogrotta/repositories/llm_recommendation/exercise/saved_files/model_franc', save_format='tf')
-
+# Initialize validation counters
 total_correct_transitions = 0
 total_possible_transitions = 0
 set_mismatch_count = 0
@@ -103,9 +116,11 @@ phase_limit_violation_indices = []
 set_mismatch_indices = []
 all_predicted_sequences = []
 pattern_violation_indices = []
+
 for idx, seq in enumerate(test_sequences):
     is_correct_sequence = True
     injury_score = test_injury_scores[idx]
+    progress_seq = test_phase_progress[idx]
 
     if injury_score < injury_threshold:
         warm_up = warm_up_A
@@ -120,8 +135,10 @@ for idx, seq in enumerate(test_sequences):
 
     initial_input_exercise = seq[:window]
     initial_input_injury = np.full(window, injury_score)
+    initial_input_progress = progress_seq[:window]
     current_seq_exercise = initial_input_exercise.reshape(1, window)
     current_seq_injury = initial_input_injury.reshape(1, window)
+    current_seq_progress = initial_input_progress.reshape(1, window)
 
     current_phase = "warm_up"
     warmup_count, main_count, cooldown_count = 3, 0, 0
@@ -129,7 +146,7 @@ for idx, seq in enumerate(test_sequences):
     mismatch_found = False
 
     for i in range(window, len(seq)):
-        pred_probs = predict_with_temperature(model, [current_seq_exercise, current_seq_injury], temperature)
+        pred_probs = predict_with_temperature(model, [current_seq_exercise, current_seq_injury, current_seq_progress], temperature)
         pred_next = np.random.choice(range(num_classes), p=pred_probs[0])
 
         predicted_sequence.append(pred_next)
@@ -146,7 +163,7 @@ for idx, seq in enumerate(test_sequences):
                     is_correct_sequence = False
             if predicted_value in main_exercises:
                 current_phase = "main"
-                main_count = 1
+                main_count += 1
                 total_correct_transitions += 1
             elif predicted_value in cool_down:
                 current_phase = "cool_down"
@@ -166,7 +183,7 @@ for idx, seq in enumerate(test_sequences):
                     is_correct_sequence = False
             elif predicted_value in cool_down:
                 current_phase = "cool_down"
-                cooldown_count = 1
+                cooldown_count += 1
                 total_correct_transitions += 1
             elif predicted_value in warm_up:
                 transition_error_matrix.loc[previous_phase, "warm_up"] += 1
@@ -219,6 +236,7 @@ for idx, seq in enumerate(test_sequences):
 
         current_seq_exercise = np.append(current_seq_exercise[:, 1:], [[pred_next]], axis=1)
         current_seq_injury = np.append(current_seq_injury[:, 1:], [[injury_score]], axis=1)
+        current_seq_progress = np.append(current_seq_progress[:, 1:], [[progress_seq[i]]], axis=1)
 
     all_predicted_sequences.append(predicted_sequence)
     if is_correct_sequence == True:
@@ -253,8 +271,8 @@ else:
 mismatch_percentage = set_mismatch_count / len(y_test) * 100
 print(f"Percentage of predictions outside expected set based on injury score: {mismatch_percentage:.2f}% ({set_mismatch_count}/{len(y_test)})")
 
-print(f"Number of phase limit violations: {phase_limit_violations}")
-print(f"Number of phase transition violations: {phase_transition_violations}")
+print(f"Number of phase limit violations: {phase_limit_violations} / {total_limit_opportunities}")
+print(f"Number of phase transition violations: {phase_transition_violations} / {total_possible_transitions}")
 
 if total_pattern_checks > 0:
     pattern_violation_rate = (pattern_violations / total_pattern_checks) * 100
@@ -278,12 +296,12 @@ sampled_indices_phase_limit_violation = np.random.choice(phase_limit_violation_i
                                    min(len(phase_limit_violation_indices), num_samples_to_plot), replace=False)
 sampled_indices_set_mismatch = np.random.choice(set_mismatch_indices, min(len(set_mismatch_indices), num_samples_to_plot), replace=False)
 all_violation_indices = set(violation_indices + phase_limit_violation_indices + set_mismatch_indices + pattern_violation_indices)
+# all_violation_indices = set(violation_indices + phase_limit_violation_indices + set_mismatch_indices)
 no_violation_indices = [i for i in range(len(test_sequences)) if i not in all_violation_indices]
 sampled_indices_no_violation = np.random.choice(no_violation_indices, min(len(no_violation_indices), num_samples_to_plot))
 
-print(f"Number of right sequences: {len(no_violation_indices)}")
+print(f"Number of right sequences: {len(no_violation_indices)} / {len(test_sequences)}")
 print(f"Number of right sequences (with flag): {correct_sequences}")
-
 
 for index in sampled_indices_phase_violation:
     plt.figure(figsize=(12, 6))
@@ -303,9 +321,9 @@ for index in sampled_indices_phase_violation:
     plt.plot(predicted_sequence, label="Predicted Sequence", linestyle="-", marker="x")
 
     plt.axhline(y=warmup_limit, color='orange', linestyle='--')
-    plt.axhline(y=cooldown_limit, color='orange', linestyle='--')
+    plt.axhline(y=cooldown_limit, color='purple', linestyle='--')
 
-    plt.axvline(x=2, color='purple', linestyle='--')
+    plt.axvline(x=2, color='orange', linestyle='--')
     plt.axvline(x=11, color='purple', linestyle='--')
 
     current_phase = "warm_up"
@@ -331,8 +349,7 @@ for index in sampled_indices_phase_violation:
     plt.ylabel("Exercise ID")
     plt.title(f"Phase Violation")
     plt.legend(loc='upper left')
-    plt.xlim(0, 14)
-    plt.savefig(f"figure/phase_violation_{index}.svg", format='svg', bbox_inches='tight', pad_inches=0)
+    plt.savefig(f"figure/phase_violation_{index}.pdf", format='pdf', bbox_inches='tight', pad_inches=0)
 
 for index in sampled_indices_phase_limit_violation:
     plt.figure(figsize=(12, 6))
@@ -348,9 +365,9 @@ for index in sampled_indices_phase_limit_violation:
     plt.plot(predicted_sequence, label="Predicted Sequence", linestyle="-", marker="x")
 
     plt.axhline(y=warmup_limit, color='orange', linestyle='--', label="Warm-Up Limit")
-    plt.axhline(y=cooldown_limit, color='orange', linestyle='--')
+    plt.axhline(y=cooldown_limit, color='purple', linestyle='--')
 
-    plt.axvline(x=2, color='purple', linestyle='--')
+    plt.axvline(x=2, color='orange', linestyle='--')
     plt.axvline(x=11, color='purple', linestyle='--')
 
     for i, (true_val, pred_val) in enumerate(zip(true_sequence, predicted_sequence)):
@@ -363,8 +380,7 @@ for index in sampled_indices_phase_limit_violation:
     plt.ylabel("Exercise ID")
     plt.title(f"Phase Limit Violation")
     plt.legend(loc='upper left')
-    plt.xlim(0, 14)
-    plt.savefig(f"figure/phase_limit_violation_{index}.svg", format='svg', bbox_inches='tight', pad_inches=0)
+    plt.savefig(f"figure/phase_limit_violation_{index}.pdf", format='pdf', bbox_inches='tight', pad_inches=0)
 
 for index in sampled_indices_set_mismatch:
     plt.figure(figsize=(12, 6))
@@ -382,9 +398,9 @@ for index in sampled_indices_set_mismatch:
     plt.plot(predicted_sequence, label="Predicted Sequence", linestyle="-", marker="x")
 
     plt.axhline(y=warmup_limit, color='orange', linestyle='--')
-    plt.axhline(y=cooldown_limit, color='orange', linestyle='--')
+    plt.axhline(y=cooldown_limit, color='purple', linestyle='--')
 
-    plt.axvline(x=2, color='purple', linestyle='--')
+    plt.axvline(x=2, color='orange', linestyle='--')
     plt.axvline(x=11, color='purple', linestyle='--')
 
     for i, pred_val in enumerate(predicted_sequence):
@@ -395,8 +411,7 @@ for index in sampled_indices_set_mismatch:
     plt.ylabel("Exercise ID")
     plt.title(f"Set Mismatch Violation")
     plt.legend(loc='upper left')
-    plt.xlim(0, 14)
-    plt.savefig(f"figure/set_mismatch_{index}.svg", format='svg', bbox_inches='tight', pad_inches=0)
+    plt.savefig(f"figure/set_mismatch_{index}.pdf", format='pdf', bbox_inches='tight', pad_inches=0)
 
 for index in sampled_indices_no_violation:
     plt.figure(figsize=(12, 6))
@@ -411,17 +426,16 @@ for index in sampled_indices_no_violation:
     plt.plot(true_sequence, label="True Sequence", linestyle="--", marker="o")
     plt.plot(predicted_sequence, label="Predicted Sequence", linestyle="-", marker="x")
 
-    plt.axhline(y=warmup_limit, color='orange', linestyle='--')
-    plt.axhline(y=cooldown_limit, color='orange', linestyle='--')
+    plt.axhline(y=warmup_limit, color='orange', linestyle='--', label="Warm-Up Limit")
+    plt.axhline(y=cooldown_limit, color='purple', linestyle='--', label="Cool-Down Limit")
 
-    plt.axvline(x=2, color='purple', linestyle='--')
+    plt.axvline(x=2, color='orange', linestyle='--')
     plt.axvline(x=11, color='purple', linestyle='--')
 
     plt.xlabel("Exercise Step")
     plt.ylabel("Exercise ID")
     plt.title(f"Sequence Without Violations - Index {index}")
     plt.legend(loc='upper left')
-    plt.xlim(0, 14)
-    plt.savefig(f"figure/no_violations_{index}.svg", format='svg', bbox_inches='tight', pad_inches=0)
+    plt.savefig(f"figure/no_violations_{index}.pdf", format='pdf', bbox_inches='tight', pad_inches=0)
 
 plt.show()

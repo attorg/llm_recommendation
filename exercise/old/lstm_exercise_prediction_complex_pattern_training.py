@@ -80,5 +80,5 @@ history = model.fit(
 model.save('lstm_exercise_prediction_complex_pattern_w_3.h5')
 
 # Save the training history
-with open('saved_files/training_history.pkl', 'wb') as file_pi:
+with open('../saved_files/training_history.pkl', 'wb') as file_pi:
     pickle.dump(history.history, file_pi)

@@ -8,7 +8,7 @@ matplotlib.use('TkAgg')
 plt.style.use('classic')
 
 # Load the training history
-with open('saved_files/training_history.pkl', 'rb') as file_pi:
+with open('../saved_files/training_history.pkl', 'rb') as file_pi:
     history = pickle.load(file_pi)
 
 # Plotting the loss over epochs

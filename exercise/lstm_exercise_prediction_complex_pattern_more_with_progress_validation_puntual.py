@@ -55,7 +55,7 @@ exercise_columns = [col for col in data.columns if col.startswith('Exercise_')]
 progress_columns = [col for col in data.columns if col.startswith('Phase_Progress')]
 
 sequences = data[exercise_columns].values - 1
-sequences = sequences[:100]
+# sequences = sequences[:100]
 phase_progress = data[progress_columns].values
 injury_scores = data['InjuryScore'].values
 
@@ -106,6 +106,7 @@ total_limit_opportunities = 0
 
 pattern_violations = 0
 total_pattern_checks = 0
+correct_sequences = 0
 
 phases = ["warm_up", "main", "cool_down"]
 transition_error_matrix = pd.DataFrame(np.zeros((3, 3), dtype=int), index=phases, columns=phases)
@@ -114,8 +115,10 @@ violation_indices = []
 phase_limit_violation_indices = []
 set_mismatch_indices = []
 all_predicted_sequences = []
+pattern_violation_indices = []
 
 for idx, seq in enumerate(test_sequences):
+    is_correct_sequence = True
     injury_score = test_injury_scores[idx]
     progress_seq = test_phase_progress[idx]
 
@@ -138,7 +141,7 @@ for idx, seq in enumerate(test_sequences):
     current_seq_progress = initial_input_progress.reshape(1, window)
 
     current_phase = "warm_up"
-    main_count, cooldown_count = 0, 0
+    warmup_count, main_count, cooldown_count = 3, 0, 0
     predicted_sequence = []
     mismatch_found = False
 
@@ -150,7 +153,14 @@ for idx, seq in enumerate(test_sequences):
         predicted_value = int(pred_next)
         previous_phase = current_phase
 
-        if previous_phase == "warm_up":
+        if current_phase == "warm_up":
+            total_limit_opportunities += 1
+            if predicted_value in warm_up:
+                warmup_count += 1
+                if warmup_count > warmup_limit:
+                    phase_limit_violations += 1
+                    phase_limit_violation_indices.append(idx)
+                    is_correct_sequence = False
             if predicted_value in main_exercises:
                 current_phase = "main"
                 main_count = 1
@@ -160,49 +170,60 @@ for idx, seq in enumerate(test_sequences):
                 transition_error_matrix.loc[previous_phase, "cool_down"] += 1
                 phase_transition_violations += 1
                 violation_indices.append(idx)
+                is_correct_sequence = False
             total_possible_transitions += 1
 
-        elif previous_phase == "main":
+        elif current_phase == "main":
             total_limit_opportunities += 1
             if predicted_value in main_exercises:
                 main_count += 1
                 if main_count > main_limit:
                     phase_limit_violations += 1
                     phase_limit_violation_indices.append(idx)
+                    is_correct_sequence = False
             elif predicted_value in cool_down:
                 current_phase = "cool_down"
-                cooldown_count = 0
+                cooldown_count = 1
                 total_correct_transitions += 1
             elif predicted_value in warm_up:
                 transition_error_matrix.loc[previous_phase, "warm_up"] += 1
                 phase_transition_violations += 1
                 violation_indices.append(idx)
+                is_correct_sequence = False
             total_possible_transitions += 1
 
-        elif previous_phase == "cool_down":
+        elif current_phase == "cool_down":
             total_limit_opportunities += 1
             if predicted_value in cool_down:
                 cooldown_count += 1
                 if cooldown_count > cooldown_limit:
                     phase_limit_violations += 1
                     phase_limit_violation_indices.append(idx)
+                    is_correct_sequence = False
             elif predicted_value in main_exercises:
                 transition_error_matrix.loc[previous_phase, "main"] += 1
                 phase_transition_violations += 1
                 violation_indices.append(idx)
+                is_correct_sequence = False
+            elif predicted_value in warm_up:
+                transition_error_matrix.loc[previous_phase, "warm_up"] += 1
+                phase_transition_violations += 1
+                violation_indices.append(idx)
+                is_correct_sequence = False
             total_possible_transitions += 1
 
         expected_set = set_A if injury_score < injury_threshold else set_B
         if predicted_value not in expected_set and not mismatch_found:
             set_mismatch_count += 1
             set_mismatch_indices.append(idx)
+            is_correct_sequence = False
             mismatch_found = True
 
-        if previous_phase == "warm_up":
+        if current_phase == "warm_up":
             pattern = phase_patterns["warm_up"]
-        elif previous_phase == "main":
+        elif current_phase == "main":
             pattern = phase_patterns["main"]
-        elif previous_phase == "cool_down":
+        elif current_phase == "cool_down":
             pattern = phase_patterns["cool_down"]
 
         if current_seq_exercise[0, -1] in pattern:
@@ -210,12 +231,16 @@ for idx, seq in enumerate(test_sequences):
             expected_next = pattern[current_seq_exercise[0, -1]]
             if predicted_value != expected_next:
                 pattern_violations += 1
+                pattern_violation_indices.append(idx)
+                is_correct_sequence = False
 
         current_seq_exercise = np.append(current_seq_exercise[:, 1:], [[pred_next]], axis=1)
         current_seq_injury = np.append(current_seq_injury[:, 1:], [[injury_score]], axis=1)
         current_seq_progress = np.append(current_seq_progress[:, 1:], [[progress_seq[i]]], axis=1)
 
     all_predicted_sequences.append(predicted_sequence)
+    if is_correct_sequence == True:
+        correct_sequences += 1
 
 transition_error_matrix.to_csv('transition_error_matrix.csv')
 print("Matrice di errore di transizione:\n", transition_error_matrix)
@@ -274,7 +299,8 @@ all_violation_indices = set(violation_indices + phase_limit_violation_indices + 
 no_violation_indices = [i for i in range(len(test_sequences)) if i not in all_violation_indices]
 sampled_indices_no_violation = np.random.choice(no_violation_indices, min(len(no_violation_indices), num_samples_to_plot))
 
-print(f"Number of right sequences: {len(no_violation_indices)} / {len(test_sequences)}")
+print(f"Number of right sequences: {len(no_violation_indices)}")
+print(f"Number of right sequences (with flag): {correct_sequences}")
 
 for index in sampled_indices_phase_violation:
     plt.figure(figsize=(12, 6))
