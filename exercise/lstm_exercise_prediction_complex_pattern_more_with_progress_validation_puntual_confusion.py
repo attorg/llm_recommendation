@@ -24,7 +24,7 @@ temperature = 0.03
 num_classes = 23
 window = 3
 injury_threshold = 0.5
-warmup_limit, main_limit, cooldown_limit = 3, 10, 4
+warmup_limit, main_limit, cooldown_limit = 3, 9, 3
 
 set_A = set(range(0, 13))
 set_B = set(range(13, 23))
@@ -49,22 +49,22 @@ patterns_B = {
     "cool_down": {20: 21}
 }
 
-data = pd.read_csv('data/exercise_sequence_complex_pattern_more_with_progress_test_different_limit.csv')
+data = pd.read_csv('data/exercise_sequence_complex_pattern_more_with_progress.csv')
 
 # Extract exercise sequences, injury scores, and phase progress
 exercise_columns = [col for col in data.columns if col.startswith('Exercise_')]
 progress_columns = [col for col in data.columns if col.startswith('Phase_Progress')]
 
 sequences = data[exercise_columns].values - 1
-sequences = sequences[:200]
+sequences = sequences[:100]
 phase_progress = data[progress_columns].values
 injury_scores = data['InjuryScore'].values
 
 # Split into training and test sets
 split_index = int(len(sequences) * 0.70)
-train_sequences, test_sequences = sequences, sequences
-test_phase_progress = phase_progress
-test_injury_scores = injury_scores
+train_sequences, test_sequences = sequences[:split_index], sequences[split_index:]
+test_phase_progress = phase_progress[split_index:]
+test_injury_scores = injury_scores[split_index:]
 
 # Prepare test inputs and targets
 X_test_exercise = []
@@ -95,7 +95,8 @@ y_test = np.array(y_test)
 injury_test_labels = np.array(injury_test_labels)
 
 # Load the model
-model = load_model('lstm_exercise_prediction_complex_pattern_more_with_progress_w_3.h5')
+# model = load_model('lstm_exercise_prediction_complex_pattern_more_with_progress_w_3.h5')
+model = load_model('lstm_exercise_prediction_complex_pattern_more_with_progress_w_3_test.h5')
 
 # Initialize validation counters
 total_correct_transitions = 0
@@ -110,7 +111,6 @@ total_pattern_checks = 0
 correct_sequences = 0
 
 phases = ["warm_up", "main", "cool_down"]
-transition_error_matrix = pd.DataFrame(np.zeros((3, 3), dtype=int), index=phases, columns=phases)
 
 violation_indices = []
 phase_limit_violation_indices = []
@@ -147,8 +147,7 @@ for idx, seq in enumerate(test_sequences):
     mismatch_found = False
 
     for i in range(window, len(seq)):
-        pred_probs = predict_with_temperature(model, [current_seq_exercise, current_seq_injury, current_seq_progress],
-                                              temperature)
+        pred_probs = predict_with_temperature(model, [current_seq_exercise, current_seq_injury, current_seq_progress], temperature)
         pred_next = np.random.choice(range(num_classes), p=pred_probs[0])
         # pred_next = np.argmax(pred_probs[0])
 
@@ -291,24 +290,19 @@ cooldown_limit_B = min(cool_down_B) + 1
 
 num_samples_to_plot = 10
 
-sampled_indices_phase_violation = np.random.choice(violation_indices, min(len(violation_indices), num_samples_to_plot),
-                                                   replace=False)
+sampled_indices_phase_violation = np.random.choice(violation_indices, min(len(violation_indices), num_samples_to_plot), replace=False)
 sampled_indices_phase_limit_violation = np.random.choice(phase_limit_violation_indices,
-                                                         min(len(phase_limit_violation_indices), num_samples_to_plot),
-                                                         replace=False)
-sampled_indices_set_mismatch = np.random.choice(set_mismatch_indices,
-                                                min(len(set_mismatch_indices), num_samples_to_plot), replace=False)
+                                   min(len(phase_limit_violation_indices), num_samples_to_plot), replace=False)
+sampled_indices_set_mismatch = np.random.choice(set_mismatch_indices, min(len(set_mismatch_indices), num_samples_to_plot), replace=False)
 all_violation_indices = set(violation_indices + phase_limit_violation_indices + set_mismatch_indices)
 no_violation_indices = [i for i in range(len(test_sequences)) if i not in all_violation_indices]
-sampled_indices_no_violation = np.random.choice(no_violation_indices,
-                                                min(len(no_violation_indices), num_samples_to_plot))
+sampled_indices_no_violation = np.random.choice(no_violation_indices, min(len(no_violation_indices), num_samples_to_plot))
 
 print(f"Number of right sequences: {len(no_violation_indices)}")
 print(f"Number of right sequences (with flag): {correct_sequences}")
 
 
-def get_combined_label(value, injury_score, warm_up_A, main_A, cool_down_A, warm_up_B, main_B, cool_down_B, set_A,
-                       set_B, injury_threshold):
+def get_combined_label(value, injury_score, warm_up_A, main_A, cool_down_A, warm_up_B, main_B, cool_down_B, set_A, set_B, injury_threshold):
     """
     Combina fase e injury set in un'unica etichetta.
     """
@@ -331,7 +325,6 @@ def get_combined_label(value, injury_score, warm_up_A, main_A, cool_down_A, warm
         raise ValueError(f"Valore non valido: {value}, non appartiene a nessuna fase valida.")
 
     return f"{phase}_{injury_set}"
-
 
 # Genera etichette combinate vere e predette
 true_combined_labels = []
@@ -363,7 +356,7 @@ for idx, predicted_sequence in enumerate(all_predicted_sequences):
 combined_labels = [
     "warm_up_Set A", "main_Set A",
     "cool_down_Set A", "warm_up_Set B",
-    "main_Set B", "cool_down_Set B"
+     "main_Set B", "cool_down_Set B"
 ]
 
 # Calcola la matrice di confusione combinata
