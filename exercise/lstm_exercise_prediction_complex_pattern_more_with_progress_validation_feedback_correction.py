@@ -100,7 +100,7 @@ def compute_q_t(base_probabilities, feedback, similarity_matrix, beta, previous_
 
 # Parameters
 temperature = 0.02
-beta = 0.1  # Controls the influence of feedback
+beta = 100  # Controls the influence of feedback
 num_classes = 23
 window = 3
 injury_threshold = 0.5
@@ -193,7 +193,7 @@ exercise_columns = [col for col in data.columns if col.startswith('Exercise_')]
 progress_columns = [col for col in data.columns if col.startswith('Phase_Progress')]
 
 sequences = data[exercise_columns].values - 1
-# sequences = sequences[:500]
+sequences = sequences[:500]
 phase_progress = data[progress_columns].values
 injury_scores = data['InjuryScore'].values
 
@@ -295,20 +295,21 @@ for idx, seq in enumerate(test_sequences):
         base_probs, logits = predict_with_temperature(model, [current_seq_exercise, current_seq_injury, current_seq_progress], temperature)
 
         # Compute q_t based on feedback and similarity (placeholder feedback)
-        feedback = np.random.uniform(-1, 1)  # Replace with actual feedback
+        # feedback = np.random.uniform(-1, 1)  # Replace with actual feedback
+        feedback = np.random.choice([-1, 1])
         feedback_sequence.append(feedback)
         q_t = compute_q_t(base_probs[0], feedback, similarity_matrix, beta, predicted_value)
 
         # Correct probabilities using q_t
-        corrected_probs = predict_with_feedback_correction(logits, q_t)
-
+        # corrected_probs = predict_with_feedback_correction(logits, q_t)
+        corrected_probs = q_t
         # Compute KL divergence
         kl_div = compute_kl_divergence(q_t, corrected_probs)  # Ensure matrices are aligned
         kl_divergences.append(kl_div)  # Append the first (and only) row result
 
         # pred_next = np.random.choice(range(num_classes), p=corrected_probs[0])
         # pred_next = np.argmax(corrected_probs[0])
-        pred_next = np.random.choice(range(num_classes), p=corrected_probs[0])
+        pred_next = np.random.choice(range(num_classes), p=corrected_probs)
 
         predicted_sequence.append(pred_next)
         predicted_value = int(pred_next)
